@@ -1,0 +1,33 @@
+# ==video-averaging configuration file==
+#
+# By default, the video-averaging script will look for this file in 
+# the config folder under the user's home directory
+# (~/.config/video-averaging/) or in the $XDG_CONFIG_DIRS 
+# (/etc/xdg/video-averaging). If it can't find a file named
+# config.yml in these default locations, it will look for it in the
+# current working directory. If config.yml cannot be found in any 
+# of the above locations, the program will abort with an error message
+# explaining the situation.
+
+
+# ==configuration options==
+
+# location of the python-image-averaging script
+# (average_machine.py)
+# download from: https://github.com/mexitek/python-image-averaging
+:average_machine: "please configure!"
+
+# video converter - either avconv or ffmpeg
+:converter: "ffmpeg"
+
+# default image width
+:width: "720"
+
+# default temporary image directory
+:temp_dir: ".video_averaging_img"
+
+# default seconds per frame
+:seconds_per_frame: "60"
+
+# default output directory
+#:output: ""
