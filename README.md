@@ -125,7 +125,11 @@ In general, the fewer frames are extracted from the source video, the more defin
 
 As an example, here is [this cc-by licensed cell phone video from YouTube](https://www.youtube.com/watch?v=YvNnWQeatMg) by [Brian Ruhe](https://www.youtube.com/channel/UCU3u-_-Y6j07XILBHo4rkXA) at `-f 60` vs. `-f 10`:
 
+_-f 60_
+
 ![](https://i.imgur.com/7PJbstK.jpg)
+
+_-f 10_
 
 ![](https://i.imgur.com/wzWxyFV.jpg)
 
@@ -138,7 +142,21 @@ vs. the same video at `-f 1`:
 ![](https://i.imgur.com/MDjp4Sv.jpg)
 
 ### Objects in frame
-The longer an object is in a particular place on screen in the source video, the more distinct it will tend to be in the resulting average image. Experiment with videos where the camera angle and subject never move to see the effect of this.
+The longer an object is in a particular place on screen in the source video, the more distinct it will tend to be in the resulting average image.
+
+For example, in [this video by Eben Moglen](https://en.wikipedia.org/wiki/File:Eben_Moglen_-_From_the_birth_of_printing_to_industrial_culture;_the_root_of_copyright.ogv), the camera angle, background, and main subject change very little over the duration of the clip. If we average the frames, even using a low rate such as `-f 10`, the image remains quite recognizable:
+
+_-f 10_
+
+![](http://imgur.com/tloeYD1.jpg)
+
+Bringing the seconds-per-frame rate down all the way to `-f 1` leads to a surprising result:
+
+_-f 1_
+
+![](http://imgur.com/T9qitgX.jpg)
+
+Here the subject remains distinct, but the background in particular has become even sharper and more focused (as opposed to videos with lots of motion, which become blurry and indistinct at high seconds-per-frame rates).
 
 ### Black and white videos
 Running video-averaging on black and white videos can have an interesting effect. Here is the result of averaging frames from [Battleship Potemkin](https://archive.org/details/BattleshipPotemkin) (1925):
@@ -155,3 +173,4 @@ All example images retain the license of their source videos:
 * [Kauai in HD - Hawaii Amazing Scenery](https://www.youtube.com/watch?v=TxHBeXCWzGg) by [Stephane Thomas](https://www.youtube.com/channel/UCnpk8qFPkxy2Tp_VS6SyWTQ) is licensed CC-BY
 * [Sita Sings the Blues](http://sitasingstheblues.com/) by [Nina Paley](http://blog.ninapaley.com/) is licensed CC-0
 * [Spectacular Scenery! Flying Across BC with Samsung Phone Optical Illusion](https://www.youtube.com/watch?v=YvNnWQeatMg) by [Brian Ruhe](https://www.youtube.com/channel/UCU3u-_-Y6j07XILBHo4rkXA)
+* [From the birth of printing to industrial culture; the root of copyright](https://en.wikipedia.org/wiki/File:Eben_Moglen_-_From_the_birth_of_printing_to_industrial_culture;_the_root_of_copyright.ogv) by [Eben Moglen](http://emoglen.law.columbia.edu/) is licensed CC-BY-SA
