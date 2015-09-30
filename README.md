@@ -102,8 +102,10 @@ Creates an image based on the same YouTube video as above, but taking one frame 
 
 The following command-line options are available:
 * `--avconv`: Use avconv for video conversion instead of ffmpeg
+* `-b` (`--batch`): Batch extract average images from specified video at multiple frame rates (-f = 60, 30, 15, 10, and 1)
 * `-f SECONDS` (`--seconds-per-frame SECONDS`): Specify the number of seconds per frame
 * `--ffmpeg`: Use ffmpeg for video conversion`
+* `-g` (`--gif`): Use together with `-b` -- make a gif out of a series of averaged images
 * `-h SIZE` (`--height SIZE`): Specify an output image height
 * `-o DIRECTORY` (`--output DIRECTORY`): Specify an output directory for the result image
 * `-s DIRECTORY` (`--source DIRECTORY`): Specify source directory
