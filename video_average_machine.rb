@@ -104,8 +104,15 @@ FileUtils.mkdir_p temp_dir
 # extract frames from video
 `#{converter} -i "#{input_video}" -r 1/#{seconds_per_frame} "#{temp_dir}/#{quick_id}%03d.png"`
 
+
+frames_count = Dir.glob(temp_dir + "/*").length.to_s
+
 # average those frames to get the final image
 `python #{average_machine} -s #{temp_dir}/ -a #{output}img_avg-#{quick_id}_f#{seconds_per_frame}-#{width}`
+
+puts
+puts "  #{frames_count} frames have been extracted and averaged at #{seconds_per_frame} seconds per frame from source video:
+  #{basename}."
 
 # cleanup temporary files
 FileUtils.rm_rf(temp_dir)
