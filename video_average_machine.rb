@@ -105,7 +105,7 @@ FileUtils.mkdir_p temp_dir
 `#{converter} -i "#{input_video}" -r 1/#{seconds_per_frame} "#{temp_dir}/#{quick_id}%03d.png"`
 
 # average those frames to get the final image
-`python #{average_machine} -s #{temp_dir}/ -a #{output}img_avg-#{quick_id}#{width}`
+`python #{average_machine} -s #{temp_dir}/ -a #{output}img_avg-#{quick_id}_f#{seconds_per_frame}-#{width}`
 
 # cleanup temporary files
 FileUtils.rm_rf(temp_dir)
