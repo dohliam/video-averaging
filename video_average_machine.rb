@@ -12,6 +12,7 @@ OptionParser.new do |opts|
   opts.banner = "  video-averaging - tool to average video frames\n\n  Usage: ruby video_averaging_machine.rb [options] -s [source folder] -a [output folder]"
 
   opts.on("", "--avconv", "Use avconv for video conversion") { options[:avconv] = true }
+  opts.on("-b", "--batch", "Batch extract average from video at multiple frame rates (60,30,15,10,1)") { options[:batch] = true }
   opts.on("-f", "--seconds-per-frame SECONDS", "Specify number of seconds per frame") { |v| options[:seconds_per_frame] = v }
   opts.on("", "--ffmpeg", "Use ffmpeg for video conversion") { options[:ffmpeg] = true }
   opts.on("-h", "--height SIZE", "Specify an output image height") { |v| options[:width] = v }
@@ -100,6 +101,19 @@ quick_id = basename.gsub(/\s/, "").gsub(/^(.{9}).*/, "\\1")
 
 temp_dir = output + ".video_averaging_img-" + quick_id
 FileUtils.mkdir_p temp_dir
+
+if options[:batch]
+  batch_series = ["60", "30", "15", "10", "1"]
+  batch_series.each do |s|
+    `#{converter} -i "#{input_video}" -r 1/#{s} "#{temp_dir}/#{quick_id}%03d.png"`
+    `python #{average_machine} -s #{temp_dir}/ -a #{output}img_avg-#{quick_id}_f#{s}-#{width}`
+    FileUtils.rm_rf(temp_dir + "/*")
+    puts "\n  **-f #{s} completed**"
+  end
+  puts
+  puts "  Source video processed at -f 60, -f 30, -f 15, -f 10, -f 1"
+  exit
+end
 
 # extract frames from video
 `#{converter} -i "#{input_video}" -r 1/#{seconds_per_frame} "#{temp_dir}/#{quick_id}%03d.png"`
