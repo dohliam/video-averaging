@@ -14,6 +14,7 @@ OptionParser.new do |opts|
   opts.on("", "--avconv", "Use avconv for video conversion") { options[:avconv] = true }
   opts.on("-b", "--batch", "Batch extract average from video at multiple frame rates (60,30,15,10,1)") { options[:batch] = true }
   opts.on("-f", "--seconds-per-frame SECONDS", "Specify number of seconds per frame") { |v| options[:seconds_per_frame] = v }
+  opts.on("-g", "--gif", "With -b, make gif out of series of averaged images") { options[:gif] = true }
   opts.on("", "--ffmpeg", "Use ffmpeg for video conversion") { options[:ffmpeg] = true }
   opts.on("-h", "--height SIZE", "Specify an output image height") { |v| options[:width] = v }
   opts.on("-o", "--output DIRECTORY", "Specify output directory") { |v| options[:output] = v }
@@ -42,6 +43,11 @@ else
         either in the config folder under your home directory (i.e.,
         ~/.config/video-averaging/config.yml), or in the same directory as the 
         video_averaging_machine.rb executable.")
+end
+
+def cleanup_temp_files(temp_dir)
+  FileUtils.rm_rf(temp_dir)
+  FileUtils.rm_rf(Dir.pwd + "/.temp.mp4")
 end
 
 if !ARGV[0]
@@ -112,6 +118,11 @@ if options[:batch]
   end
   puts
   puts "  Source video processed at -f 60, -f 30, -f 15, -f 10, -f 1"
+  if options[:gif]
+    `convert #{output}img_avg-#{quick_id}*.jpg #{output}img_avg-#{quick_id}.gif`
+  end
+  puts "  Gif image saved to img_avg-#{quick_id}.gif"
+  cleanup_temp_files(temp_dir)
   exit
 end
 
@@ -128,8 +139,4 @@ puts
 puts "  #{frames_count} frames have been extracted and averaged at #{seconds_per_frame} seconds per frame from source video:
   #{basename}."
 
-# cleanup temporary files
-FileUtils.rm_rf(temp_dir)
-if options[:url]
-  FileUtils.rm_rf(".temp.mp4")
-end
+cleanup_temp_files(temp_dir)
