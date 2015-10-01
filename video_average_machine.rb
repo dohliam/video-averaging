@@ -16,7 +16,7 @@ OptionParser.new do |opts|
   opts.on("-f", "--seconds-per-frame SECONDS", "Specify number of seconds per frame") { |v| options[:seconds_per_frame] = v }
   opts.on("-g", "--gif", "With -b, make gif out of series of averaged images") { options[:gif] = true }
   opts.on("", "--ffmpeg", "Use ffmpeg for video conversion") { options[:ffmpeg] = true }
-  opts.on("-h", "--height SIZE", "Specify an output image height") { |v| options[:width] = v }
+  opts.on("-h", "--height SIZE", "Specify an output image height") { |v| options[:height] = v }
   opts.on("-o", "--output DIRECTORY", "Specify output directory") { |v| options[:output] = v }
   opts.on("-u", "--url URL", "Extract video from url") { |v| options[:url] = v }
   opts.on("-w", "--width SIZE", "Specify an output image width") { |v| options[:width] = v }
@@ -89,6 +89,13 @@ elsif config[:width]
   width = " -w " + config[:width]
 end
 
+height = ""
+if options[:height]
+  height = " -h " + options[:height]
+elsif config[:height]
+  height = " -h " + config[:height]
+end
+
 basename = File.basename(input_video, File.extname(input_video))
 
 # output = Dir.pwd + "/"
@@ -112,7 +119,7 @@ if options[:batch]
   batch_series = ["60", "30", "15", "10", "1"]
   batch_series.each do |s|
     `#{converter} -i "#{input_video}" -r 1/#{s} "#{temp_dir}/#{quick_id}%03d.png"`
-    `python #{average_machine} -s #{temp_dir}/ -a #{output}img_avg-#{quick_id}_f#{s}-#{width}`
+    `python #{average_machine} -s #{temp_dir}/ -a #{output}img_avg-#{quick_id}_f#{s}-#{width}#{height}`
     FileUtils.rm_rf(temp_dir + "/*")
     puts "\n  **-f #{s} completed**"
   end
@@ -133,7 +140,7 @@ end
 frames_count = Dir.glob(temp_dir + "/*").length.to_s
 
 # average those frames to get the final image
-`python #{average_machine} -s #{temp_dir}/ -a #{output}img_avg-#{quick_id}_f#{seconds_per_frame}-#{width}`
+`python #{average_machine} -s #{temp_dir}/ -a #{output}img_avg-#{quick_id}_f#{seconds_per_frame}-#{width}#{height}`
 
 puts
 puts "  #{frames_count} frames have been extracted and averaged at #{seconds_per_frame} seconds per frame from source video:
